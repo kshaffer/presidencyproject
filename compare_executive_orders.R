@@ -194,11 +194,11 @@ tidy_gwb_trigrams %>%
 set.seed(2017)
 a <- grid::arrow(type = 'closed', length = unit(.1, 'inches'))
 
-bigram_graph <- tidy_gwb_bigrams %>%
+bigram_graph <- tidy_trump_bigrams %>%
   count(bigram, sort = TRUE) %>%
   mutate(bigram = reorder(bigram, n)) %>%
   separate(bigram, c('from', 'to'), sep = ' ') %>%
-  filter(n >= 20) %>%
+  filter(n >= 3) %>%
   graph_from_data_frame()
 
 ggraph(bigram_graph, layout = 'fr') +
@@ -206,7 +206,7 @@ ggraph(bigram_graph, layout = 'fr') +
   geom_node_point(color = 'lightblue', size = 3) +
   geom_node_text(aes(label = name), vjust = 1, hjust = 1) +
   theme_void() +
-  ggtitle('Network of two-word phrases occurring 20 or more times in G.W. Bush executive orders')
+  ggtitle('Network of two-word phrases occurring 3 or more times in Trump\'s executive orders.\nArrows represent word order. Darkness of line denotes frequency (darker is more frequent).')
 
 
 # compare corpora
