@@ -5,7 +5,7 @@ Code to scrape and parse documents in [The American Presidency Project](http://w
 
 The essential functions are contained in ```functions.R```. Run this script first, or include it with
 
-```source('functions.R')```
+    source('functions.R')
 
 to use those functions in your own scripts. See ```examples.R``` for examples of how to use the scraper.
 
