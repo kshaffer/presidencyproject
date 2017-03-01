@@ -26,15 +26,22 @@ deglaze <- function(page_id) {
 }
 
 
-# declare a list of pages to deglaze
+# function to extract text from hyperlink (as character)
 
-pages <- c()
+extract_link_title <- function(anchor_tag) {
+  return(unlist(strsplit(unlist(strsplit(anchor_tag, '>'))[2], '<'))[1])
+}
 
 
-# scrape and parse the pages, store as tibble called pages_data
+# function to extract target URL from hyperlink (as character)
 
-pages_data <- t(mapply(deglaze, pages)) %>%
-  as_tibble() %>%
-  unnest() %>%
-  mutate(date = ymd(date))
+extract_link_page_id <- function(anchor_tag) {
+  return(c(unlist(strsplit(unlist(strsplit(anchor_tag, '?pid='))[2], '\">'))[1]))
+}
 
+
+# function to extract president's name from title
+
+extract_president <- function(title) {
+  return(unlist(strsplit(title, ':'))[1])
+}
