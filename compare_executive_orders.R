@@ -265,7 +265,7 @@ word_ratios %>%
   arrange(abs(obama_trump_ratio))
 
 word_ratios %>%
-  filter(!word %in% c('barack', 'obama', 'donald', 'trump')) %>%
+  filter(!word %in% c('barack', 'obama', 'donald', 'trump', 'bushthe', 'a.m')) %>%
   group_by(obama_trump_ratio < 0) %>%
   top_n(15, abs(obama_trump_ratio)) %>%
   ungroup() %>%
@@ -322,7 +322,7 @@ bigram_ratios %>%
   arrange(abs(obama_trump_ratio))
 
 bigram_ratios %>%
-  filter(!bigram %in% c('barack', 'obama', 'donald', 'trump')) %>%
+  filter(!bigram %in% c('barack', 'obama', 'donald', 'trump', 'bushthe', 'a.m')) %>%
   group_by(obama_trump_ratio < 0) %>%
   top_n(15, abs(obama_trump_ratio)) %>%
   ungroup() %>%
