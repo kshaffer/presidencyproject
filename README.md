@@ -13,7 +13,7 @@ to use those functions in your own scripts. See ```examples.R``` for examples of
 
 Each content page on TAPP has a URL formatted:
 
-```http://www.presidency.ucsb.edu/ws/index.php?pid=000000```
+    http://www.presidency.ucsb.edu/ws/index.php?pid=000000
 
 where ```000000``` is a unique page ID number.
 
