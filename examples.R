@@ -55,3 +55,43 @@ obama_orders <- mapply(deglaze, exec_links$page_id) %>%
   unnest() %>%
   mutate(president = mapply(extract_president, title)) %>%
   filter(president == 'Barack Obama')
+
+
+# this example creates a tibble of all of Donald Trump's executive orders by doing
+
+trump_exec_links <- read_html('http://www.presidency.ucsb.edu/executive_orders.php?year=2017&Submit=DISPLAY') %>%
+  html_nodes('a') %>%
+  as.character() %>%
+  as_tibble() %>%
+  unique() %>%
+  filter(grepl('../ws/index.php?pid=', value, fixed = TRUE)) %>%
+  mutate(title = mapply(extract_link_title, value),
+         page_id = mapply(extract_link_page_id, value)) %>%
+  select(title, page_id)
+
+trump_orders <- mapply(deglaze, trump_exec_links$page_id) %>%
+  t() %>%
+  as_tibble() %>%
+  unnest() %>%
+  mutate(president = mapply(extract_president, title)) %>%
+  filter(president == 'Donald J. Trump')
+
+
+# this example creates a tibble containing all press briefings from the Trump administration
+# (January 21, 2017, to the present)
+
+trump_brief_links <- read_html('http://www.presidency.ucsb.edu/press_briefings.php?year=2017&Submit=DISPLAY') %>%
+  html_nodes('a') %>%
+  as.character() %>%
+  as_tibble() %>%
+  unique() %>%
+  filter(grepl('../ws/index.php?pid=', value, fixed = TRUE)) %>%
+  mutate(title = mapply(extract_link_title, value),
+         page_id = mapply(extract_link_page_id, value)) %>%
+  select(title, page_id)
+
+trump_briefings <- mapply(deglaze, trump_brief_links$page_id) %>%
+  t() %>%
+  as_tibble() %>%
+  unnest() %>%
+  filter(date >= '2017-01-21')
