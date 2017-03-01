@@ -56,8 +56,9 @@ obama_orders <- mapply(deglaze, exec_links$page_id) %>%
   mutate(president = mapply(extract_president, title)) %>%
   filter(president == 'Barack Obama')
 
+write_csv(obama_orders, 'data/obama_executive_orders.csv')
 
-# this example creates a tibble of all of Donald Trump's executive orders by doing
+# this example creates a tibble of all of Donald Trump's executive orders
 
 trump_exec_links <- read_html('http://www.presidency.ucsb.edu/executive_orders.php?year=2017&Submit=DISPLAY') %>%
   html_nodes('a') %>%
@@ -75,6 +76,62 @@ trump_orders <- mapply(deglaze, trump_exec_links$page_id) %>%
   unnest() %>%
   mutate(president = mapply(extract_president, title)) %>%
   filter(president == 'Donald J. Trump')
+
+write_csv(trump_orders, 'data/trump_executive_orders_2017-03-01.csv')
+
+
+# And George W. Bush's executive orders
+
+exec_links <- read_html('http://www.presidency.ucsb.edu/executive_orders.php?year=2009&Submit=DISPLAY') %>%
+  html_nodes('a') %>%
+  as.character() %>%
+  as_tibble() %>%
+  full_join(read_html('http://www.presidency.ucsb.edu/executive_orders.php?year=2008&Submit=DISPLAY') %>%
+              html_nodes('a') %>%
+              as.character() %>%
+              as_tibble()) %>%
+  full_join(read_html('http://www.presidency.ucsb.edu/executive_orders.php?year=2007&Submit=DISPLAY') %>%
+              html_nodes('a') %>%
+              as.character() %>%
+              as_tibble()) %>%
+  full_join(read_html('http://www.presidency.ucsb.edu/executive_orders.php?year=2006&Submit=DISPLAY') %>%
+              html_nodes('a') %>%
+              as.character() %>%
+              as_tibble()) %>%
+  full_join(read_html('http://www.presidency.ucsb.edu/executive_orders.php?year=2005&Submit=DISPLAY') %>%
+              html_nodes('a') %>%
+              as.character() %>%
+              as_tibble()) %>%
+  full_join(read_html('http://www.presidency.ucsb.edu/executive_orders.php?year=2004&Submit=DISPLAY') %>%
+              html_nodes('a') %>%
+              as.character() %>%
+              as_tibble()) %>%
+  full_join(read_html('http://www.presidency.ucsb.edu/executive_orders.php?year=2003&Submit=DISPLAY') %>%
+              html_nodes('a') %>%
+              as.character() %>%
+              as_tibble()) %>%
+  full_join(read_html('http://www.presidency.ucsb.edu/executive_orders.php?year=2002&Submit=DISPLAY') %>%
+              html_nodes('a') %>%
+              as.character() %>%
+              as_tibble()) %>%
+  full_join(read_html('http://www.presidency.ucsb.edu/executive_orders.php?year=2001&Submit=DISPLAY') %>%
+              html_nodes('a') %>%
+              as.character() %>%
+              as_tibble()) %>%
+  unique() %>%
+  filter(grepl('../ws/index.php?pid=', value, fixed = TRUE)) %>%
+  mutate(title = mapply(extract_link_title, value),
+         page_id = mapply(extract_link_page_id, value)) %>%
+  select(title, page_id)
+
+gwb_orders <- mapply(deglaze, exec_links$page_id) %>%
+  t() %>%
+  as_tibble() %>%
+  unnest() %>%
+  mutate(president = mapply(extract_president, title)) %>%
+  filter(president == 'George W. Bush')
+
+write_csv(gwb_orders, 'data/gwb_executive_orders.csv')
 
 
 # this example creates a tibble containing all press briefings from the Trump administration
