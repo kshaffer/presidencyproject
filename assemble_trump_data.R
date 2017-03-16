@@ -139,3 +139,23 @@ trump_major_speeches <- mapply(deglaze, page_ids) %>%
   unnest()
 
 write_csv(trump_major_speeches, 'data/trump_major_speeches.csv')
+
+
+# campaign speeches
+
+trump_campaign_speech_links <- read_html('http://www.presidency.ucsb.edu/2016_election_speeches.php?candidate=45&campaign=2016TRUMP&doctype=5000') %>%
+  html_nodes('a') %>%
+  as.character() %>%
+  as_tibble() %>%
+  unique() %>%
+  filter(grepl('../ws/index.php?pid=', value, fixed = TRUE)) %>%
+  mutate(title = mapply(extract_link_title, value),
+         page_id = mapply(extract_link_page_id, value)) %>%
+  select(title, page_id)
+
+trump_campaign_speeches <- mapply(deglaze, trump_campaign_speech_links$page_id) %>%
+  t() %>%
+  as_tibble() %>%
+  unnest()
+
+write_csv(trump_campaign_speeches, 'data/trump_campaign_speeches.csv')
