@@ -159,3 +159,12 @@ trump_campaign_speeches <- mapply(deglaze, trump_campaign_speech_links$page_id) 
   unnest()
 
 write_csv(trump_campaign_speeches, 'data/trump_campaign_speeches.csv')
+
+all_content <- trump_briefings %>%
+  full_join(trump_campaign_speeches) %>%
+  full_join(trump_major_speeches) %>%
+  full_join(trump_news_conferences) %>%
+  full_join(trump_orders) %>%
+  full_join(trump_policy_statements) %>%
+  full_join(trump_proclamations) %>%
+  full_join(trump_radio)
